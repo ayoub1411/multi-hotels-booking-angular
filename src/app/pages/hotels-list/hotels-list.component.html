@@ -10,7 +10,7 @@
           <!-- Search with Glass Effect -->
           <div class="glass-search">
             <input type="text" [(ngModel)]="filter.name"
-                   (input)="loadHotels()"
+                   (input)="loadHotelsLocally()"
                    placeholder="Search hotels...">
             <div class="search-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -21,9 +21,9 @@
 
           <!-- City Selector -->
           <div class="city-selector">
-            <select [(ngModel)]="filter.city" (change)="loadHotels()">
+            <select [(ngModel)]="filter.city" (change)="loadHotelsLocally()">
               <option value="">All Destinations</option>
-              <option *ngFor="let city of availableCities" [value]="city.id">
+              <option *ngFor="let city of availableCities"  [value]="city.id">
                 {{city.name}}
               </option>
             </select>
@@ -59,53 +59,23 @@
 
   <!-- Luxury Hotel Grid -->
   <div class="luxury-hotel-grid">
-    <div *ngFor="let hotel of hotels" class="hotel-card">
-      <!-- Hotel Image with Floating Badge -->
-      <div class="hotel-image-container">
-        <img [src]="imagesLink + encodeURIComponent(hotel.imageName ?? '')"
+    <app-hotel-card
+      *ngFor="let hotel of filteredHotels"
+      [hotel]="hotel" (deleteHotel)="onHotelDelete($event)"
+      (editHotel)="onHotelEdit($event)"
+      >
+    </app-hotel-card>
 
-             class="hotel-image"
-             alt="{{hotel.name}}">
-
-        <div class="rating-badge">
-          <span>{{hotel.stars || 0}}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Hotel Info -->
-      <div class="hotel-info">
-        <div class="location-line">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-          <span>{{hotel.city?.name || 'Unknown'}}</span>
-        </div>
-
-        <h3 class="hotel-name">{{hotel.name}}</h3>
-        <p class="hotel-address">{{hotel.address}}</p>
-
-        <!-- Star Rating -->
-        <div class="star-rating">
-          <div *ngFor="let star of [1,2,3,4,5]" class="star">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-            </svg>
-          </div>
-        </div>
-
-        <!-- Explore Button -->
-        <button class="explore-btn">
-          <span>Explore</span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-          </svg>
-        </button>
-      </div>
-    </div>
   </div>
+  <app-edit-product
+    *ngIf="this.editedHotel!=undefined" [hotel]="editedHotel" [cities]="this.availableCities"
+
+    (closeEdit)="onClose($event)"
+
+    (updateHotel)="applyEdit($event)"
+
+    >
+  </app-edit-product>
 
   <!-- Pagination -->
   <div class="luxury-pagination" *ngIf="hotels.length > 0">

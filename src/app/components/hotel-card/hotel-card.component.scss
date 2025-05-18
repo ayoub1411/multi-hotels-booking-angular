@@ -1,0 +1,556 @@
+/* hotels-list.component.scss */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+// Luxury Color Palette
+$primary-dark: #1a1a2e;
+$primary-accent: #0f3460;
+$secondary-accent: #e94560;
+$light-bg: #f8f9fa;
+$gold: #ffd700;
+$silver: #c0c0c0;
+$platinum: #e5e4e2;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $easing: ease-in-out) {
+  transition: $property $duration $easing;
+}
+
+// Base Styles
+.luxury-hotel-booking {
+  font-family: 'Montserrat', sans-serif;
+  background-color: $light-bg;
+  min-height: 100vh;
+  color: $primary-dark;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+// Luxury Filter Bar
+.luxury-filter-bar {
+  background: linear-gradient(135deg, $primary-dark, $primary-accent);
+  padding: 40px 0;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  .filter-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .luxury-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+}
+
+.filter-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  > div {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    @include transition;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+.glass-search {
+  display: flex;
+  align-items: center;
+
+  input {
+    background: transparent;
+    border: none;
+    padding: 15px 20px 15px 50px;
+    color: white;
+    font-size: 1rem;
+    width: 300px;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      fill: white;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.city-selector {
+  select {
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 15px 50px 15px 20px;
+    color: white;
+    font-size: 1rem;
+    width: 250px;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+
+    option {
+      color: $primary-dark;
+    }
+  }
+
+  .selector-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+
+    svg {
+      fill: white;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.star-filter {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+
+  .star-option {
+    display: flex;
+    align-items: center;
+    padding: 10px 8px;
+    cursor: pointer;
+    @include transition;
+
+    span {
+      margin-right: 5px;
+      font-weight: 500;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: rgba(255, 255, 255, 0.5);
+      @include transition;
+    }
+
+    &:hover, &.active {
+      svg {
+        fill: $gold;
+      }
+    }
+
+    &.active {
+      svg {
+        filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+      }
+    }
+  }
+
+  .clear-stars {
+    margin-left: 10px;
+    padding: 10px;
+    cursor: pointer;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: rgba(255, 255, 255, 0.7);
+      @include transition;
+    }
+
+    &:hover {
+      svg {
+        fill: $secondary-accent;
+      }
+    }
+  }
+}
+
+// Luxury Hotel Grid
+.luxury-hotel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  padding: 50px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.hotel-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  @include transition(transform, 0.4s, cubic-bezier(0.25, 0.8, 0.25, 1));
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .delete-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #ff6b6b, #e94560);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    @include transition;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      stroke: white;
+      @include transition;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, darken(#ff6b6b, 5%), darken(#e94560, 5%));
+      box-shadow: 0 5px 15px rgba(#e94560, 0.3);
+
+      svg {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+}
+
+.hotel-image-container {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+//.hotel-image {
+//  width: 100%;
+//  height: 100%;
+//  background-size: cover;
+//  background-position: center;
+//  @include transition(transform, 0.8s);
+//
+//  .hotel-card:hover & {
+//    transform: scale(1.05);
+//  }
+//}
+
+
+.rating-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba($primary-dark, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+
+  span {
+    margin-right: 5px;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: $gold;
+  }
+}
+
+.hotel-info {
+  padding: 25px;
+
+  .location-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: $primary-accent;
+    font-size: 0.9rem;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      margin-right: 8px;
+    }
+  }
+
+  .hotel-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    color: $primary-dark;
+  }
+
+  .hotel-address {
+    color: rgba($primary-dark, 0.7);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+}
+
+.star-rating {
+  display: flex;
+  margin-bottom: 25px;
+
+  .star {
+    margin-right: 5px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $gold;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.explore-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, $primary-accent, $secondary-accent);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  @include transition;
+
+  span {
+    margin-right: 10px;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: white;
+    @include transition;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, darken($primary-accent, 5%), darken($secondary-accent, 5%));
+    box-shadow: 0 5px 15px rgba($secondary-accent, 0.3);
+
+    svg {
+      transform: translateX(3px);
+    }
+  }
+}
+
+// Luxury Pagination
+.luxury-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 0 50px;
+
+  button {
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    @include transition;
+
+    &:hover:not(:disabled) {
+      background: $primary-accent;
+
+      svg {
+        fill: white;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: $primary-dark;
+      @include transition;
+    }
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 10px;
+
+    span {
+      width: 40px;
+      height: 40px;
+      @include flex-center;
+      border-radius: 50%;
+      cursor: pointer;
+      @include transition;
+      font-weight: 500;
+
+      &:hover:not(.active) {
+        background: rgba($primary-accent, 0.1);
+        color: $primary-accent;
+      }
+
+      &.active {
+        background: $primary-accent;
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 5px 15px rgba($primary-accent, 0.3);
+      }
+    }
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 992px) {
+  .luxury-hotel-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+
+    > div {
+      width: 100%;
+    }
+  }
+
+  .glass-search input {
+    width: 100%;
+  }
+
+  .city-selector select {
+    width: 100%;
+  }
+
+  .star-filter {
+    justify-content: center;
+    padding: 15px;
+  }
+}
+/* hotels-list.component.scss */
+// ... (keep all existing styles except for .hotel-image related styles)
+
+.hotel-image-container {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+
+  .hotel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s;
+
+    .hotel-card:hover & {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Add this new style for error handling
+.img-fallback {
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: "Image not available";
+    color: #999;
+    font-size: 0.9rem;
+  }
+}
+
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #5f76f3, #9d65c9);
+}
+
+.edit-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: white;
+  transition: transform 0.3s ease;
+}
+
+.edit-btn:hover svg {
+  transform: rotate(15deg);
+}
+
