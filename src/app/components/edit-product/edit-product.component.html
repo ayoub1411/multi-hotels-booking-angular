@@ -26,6 +26,10 @@
       </ng-container>
     </div>
 
+    <label>Upload Image</label>
+    <input type="file" (change)="onFileSelected($event)" />
+
+
     <div class="actions">
       <button class="save-btn" (click)="onUpdate()">💾 Save</button>
       <button class="cancel-btn"  (click)="onClose()">❌ Cancel</button>

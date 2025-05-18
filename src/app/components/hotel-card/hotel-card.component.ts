@@ -9,6 +9,10 @@ import {HotelDto} from '../../services/models/hotel-dto';
 })
 export class HotelCardComponent {
 
+
+  imagesLink: String = 'http://localhost:5001/hotels/image/'
+
+
   @Input() hotel!: HotelDto;
 
   @Output() deleteHotel = new EventEmitter<number>();
@@ -28,5 +32,11 @@ export class HotelCardComponent {
 
   }
 
+  getImageUrl(imageName: string | undefined): string {
+    // Fallback to empty string if undefined
+    return this.imagesLink + encodeURIComponent(imageName || '');
+  }
+
+  protected readonly encodeURIComponent = encodeURIComponent;
 
 }

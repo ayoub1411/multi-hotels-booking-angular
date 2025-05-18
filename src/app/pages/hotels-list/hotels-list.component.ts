@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {CityDto} from '../../services/models/city-dto';
 import {HotelCardComponent} from '../../components/hotel-card/hotel-card.component';
 import {EditProductComponent} from '../../components/edit-product/edit-product.component';
+import {CityControllerService} from '../../services/services/city-controller.service';
 
 @Component({
   selector: 'app-hotels-list',
@@ -33,7 +34,8 @@ export class HotelsListComponent implements OnInit{
 
   editedHotel:any
   filter:  Hotels$Params = {
-    items: 10
+    items: 10,
+    city: 0
   };
 
   availableCities: CityDto[] = [];
@@ -42,7 +44,7 @@ export class HotelsListComponent implements OnInit{
 
 
 
-  constructor(private hotelService: HotelControllerService) {
+  constructor(private hotelService: HotelControllerService,private cityService :CityControllerService) {
 
 
   }
@@ -53,7 +55,8 @@ export class HotelsListComponent implements OnInit{
     this.filter.stars=star;
 
 
-    this.loadHotelsLocally()
+    this.loadHotels()
+
 
 
 
@@ -70,30 +73,32 @@ export class HotelsListComponent implements OnInit{
 
     //this.loadHotels();
 
+    this.cityService.cityDtos().subscribe(cities => {
+      //console.log(cities); // array of CityDto objects
+      this.availableCities=cities
+    });
 
 
-    this.availableCities = [
-      { id: 1, name: 'New York' },
-      { id: 2, name: 'Paris' },
-      { id: 3, name: 'Tokyo' },
-      { id: 4, name: 'London' },
-      { id: 5, name: 'Dubai' }
-    ];
 
-    this.hotels = [
-      { id: 1, name: "Grand Palace Hotel", address: "123 Main St", city: this.availableCities[0], stars: 5, imageName: "grand-palace.jpg" },
-      { id: 2, name: "Seaside Resort", address: "456 Ocean Drive", city: this.availableCities[1], stars: 4, imageName: "seaside-resort.jpg" },
-      { id: 3, name: "Mountain Lodge", address: "789 Hilltop Rd", city: this.availableCities[2], stars: 3 },
-      { id: 4, name: "Bayview Inn", address: "321 Bay St", city: this.availableCities[3], stars: 4, imageName: "bayview-inn.jpg" },
-      { id: 5, name: "City Center Hotel", address: "654 Downtown Ave", city: this.availableCities[0], stars: 4 },
-      { id: 6, name: "Sunset Motel", address: "987 Sunset Blvd", city: this.availableCities[1], stars: 2, imageName: "sunset-motel.jpg" },
-      { id: 7, name: "Peak Hotel", address: "147 Mountain Rd", city: this.availableCities[2], stars: 5, imageName: "peak-hotel.jpg" },
-      { id: 8, name: "Golden Gate Suites", address: "258 Golden Gate Way", city: this.availableCities[3], stars: 5 }
-    ];
-this.filteredHotels=this.hotels
+    this.loadHotels()
+
+    console.log("Available cities : "+this.availableCities)
+
+
+
+
+
+
   }
 
+loadCities(){
 
+  this.cityService.cityDtos().subscribe(cities => {
+    console.log(cities); // array of CityDto objects
+    this.availableCities=cities;
+  });
+
+}
   loadHotelsLocally() {
 
     this.filteredHotels=this.hotels
@@ -133,7 +138,7 @@ this.filteredHotels=this.hotels
 
     const params: Hotels$Params = {}
 
-    if (this.filter.name != undefined) params.name = this.filter.name;
+    if (this.filter.name != undefined ) params.name = this.filter.name;
     if (this.filter.city != undefined) params.city = this.filter.city;
     if (this.filter.stars != undefined) params.stars = this.filter.stars;
     if (this.filter.items != undefined) params.items = this.filter.items;
@@ -179,16 +184,30 @@ this.filteredHotels=this.hotels
 
     this.editedHotel=null;
 
+
   }
 
-  applyEdit(hotel:HotelDto){
+  applyEdit(request:any){
 
-console.log("ready to update hotel..")
-console.log(hotel.id)
-  for(let i=0;i<this.hotels.length;++i){
-    if(this.hotels[i].id==hotel.id)
-      this.hotels[i]=hotel
-  }
+
+    console.log("edit from parent")
+
+    this.hotelService.updateHotel(request).
+    subscribe({
+      next: (updatedHotel) => {
+        // handle success
+
+        this.editedHotel=null;
+        this.loadHotels()
+      },
+      error: (err) => {
+        // handle error
+        console.error(err);
+      }
+    });
+
+
+
 
   }
 

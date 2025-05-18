@@ -23,7 +23,7 @@ export function updateHotel(http: HttpClient, rootUrl: string, params: UpdateHot
   const rb = new RequestBuilder(rootUrl, updateHotel.PATH, 'put');
   if (params) {
     rb.path('id', params.id, {});
-    rb.body(params.body, 'application/json');
+    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(

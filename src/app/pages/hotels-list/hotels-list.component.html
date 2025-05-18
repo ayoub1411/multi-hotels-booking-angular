@@ -10,7 +10,7 @@
           <!-- Search with Glass Effect -->
           <div class="glass-search">
             <input type="text" [(ngModel)]="filter.name"
-                   (input)="loadHotelsLocally()"
+                   (input)="loadHotels()"
                    placeholder="Search hotels...">
             <div class="search-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -21,8 +21,8 @@
 
           <!-- City Selector -->
           <div class="city-selector">
-            <select [(ngModel)]="filter.city" (change)="loadHotelsLocally()">
-              <option value="">All Destinations</option>
+            <select [(ngModel)]="filter.city"  (change)="loadHotels()">
+              <option value="0">All Destinations</option>
               <option *ngFor="let city of availableCities"  [value]="city.id">
                 {{city.name}}
               </option>
@@ -60,7 +60,7 @@
   <!-- Luxury Hotel Grid -->
   <div class="luxury-hotel-grid">
     <app-hotel-card
-      *ngFor="let hotel of filteredHotels"
+      *ngFor="let hotel of hotels"
       [hotel]="hotel" (deleteHotel)="onHotelDelete($event)"
       (editHotel)="onHotelEdit($event)"
       >
@@ -72,7 +72,7 @@
 
     (closeEdit)="onClose($event)"
 
-    (updateHotel)="applyEdit($event)"
+    (updateHotelEmitter)="applyEdit($event)"
 
     >
   </app-edit-product>

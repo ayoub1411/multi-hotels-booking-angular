@@ -2,7 +2,7 @@
 <div class="hotel-card">
   <div class="hotel-image-container">
     <img
-      src="https://img.freepik.com/photos-gratuite/montagnes-vestrahorn-stokksnes-islande_335224-667.jpg?semt=ais_hybrid&w=740"
+      [src]="imagesLink + encodeURIComponent(hotel.imageName ?? '')"
       class="hotel-image"
       alt="{{hotel.name}}">
     <div class="rating-badge">
